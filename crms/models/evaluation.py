@@ -1,6 +1,8 @@
 """Evaluation/audit model."""
 
-from sqlalchemy import ForeignKey, String, Text
+from datetime import datetime
+
+from sqlalchemy import DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -27,4 +29,4 @@ class Evaluation(Base):
     input_json: Mapped[dict] = mapped_column(JSONB, nullable=False)
     output_json: Mapped[dict] = mapped_column(JSONB, nullable=False)
     trace_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    created_at: Mapped[str] = mapped_column(String(50), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

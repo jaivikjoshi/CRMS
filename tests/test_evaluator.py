@@ -17,8 +17,8 @@ def test_eq_condition():
             "because": "CA taxable",
         },
     ]
-    trans = {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}
-    result, fired = evaluate_rules(trans, rules, 100)
+    context = {"transaction": {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}}
+    result, fired = evaluate_rules(context, rules, 100)
     assert result["taxable"] is True
     assert result["rate"] == 0.0725
     assert len(fired) == 1
@@ -43,14 +43,16 @@ def test_all_condition():
             "because": "CA SaaS consumer taxable",
         },
     ]
-    trans = {
-        "jurisdiction": "US-CA",
-        "tax_type": "SALES",
-        "amount": 100,
-        "product": {"category": "SAAS"},
-        "buyer": {"type": "CONSUMER"},
+    context = {
+        "transaction": {
+            "jurisdiction": "US-CA",
+            "tax_type": "SALES",
+            "amount": 100,
+            "product": {"category": "SAAS"},
+            "buyer": {"type": "CONSUMER"},
+        }
     }
-    result, fired = evaluate_rules(trans, rules, 100)
+    result, fired = evaluate_rules(context, rules, 100)
     assert result["taxable"] is True
     assert result["tax_amount"] == 7.25
 
@@ -67,8 +69,8 @@ def test_no_match_default():
             "because": "CA taxable",
         },
     ]
-    trans = {"jurisdiction": "US-NY", "tax_type": "SALES", "amount": 100}
-    result, fired = evaluate_rules(trans, rules, 100)
+    context = {"transaction": {"jurisdiction": "US-NY", "tax_type": "SALES", "amount": 100}}
+    result, fired = evaluate_rules(context, rules, 100)
     assert result["taxable"] is False
     assert result["rate"] == 0
     assert result["tax_amount"] == 0
@@ -95,8 +97,8 @@ def test_first_match_wins():
             "because": "Low",
         },
     ]
-    trans = {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}
-    result, fired = evaluate_rules(trans, rules, 100)
+    context = {"transaction": {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}}
+    result, fired = evaluate_rules(context, rules, 100)
     assert result["rate"] == 0.10
     assert fired[0].rule_id == "R1"
 
@@ -118,8 +120,8 @@ def test_emit_obligations():
             "because": "CA with nexus",
         },
     ]
-    trans = {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}
-    result, fired = evaluate_rules(trans, rules, 100)
+    context = {"transaction": {"jurisdiction": "US-CA", "tax_type": "SALES", "amount": 100}}
+    result, fired = evaluate_rules(context, rules, 100)
     assert len(result["obligations"]) == 1
     assert result["obligations"][0].type == "NEXUS_MONITOR"
     assert result["obligations"][0].threshold == 500000

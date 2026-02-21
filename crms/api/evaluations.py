@@ -83,12 +83,13 @@ async def evaluate_transaction(
             detail="No published version effective at the given effective_at",
         )
 
-    # Evaluate
+    # Evaluate - wrap transaction so rule paths like "transaction.jurisdiction" work
     trans_dict = trans.model_dump()
+    context = {"transaction": trans_dict}
     rules = version.bundle_json.get("rules", [])
-    result, fired = evaluate_rules(trans_dict, rules, trans.amount)
+    result, fired = evaluate_rules(context, rules, trans.amount)
 
-    obligations = [Obligation(**o) for o in result["obligations"]]
+    obligations = result["obligations"]  # Already Obligation instances from evaluator
     result_obj = EvaluationResult(
         taxable=result["taxable"],
         rate=result["rate"],

@@ -1,16 +1,12 @@
 """Repository functions for rulesets, versions, evaluations."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from crms.models import Evaluation, Rule, Ruleset, RulesetVersion
-
-
-def _now_iso() -> str:
-    return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 async def get_ruleset_by_jurisdiction_tax(
@@ -96,7 +92,7 @@ async def create_evaluation(
         input_json=input_json,
         output_json=output_json,
         trace_id=trace_id,
-        created_at=_now_iso(),
+        created_at=datetime.now(UTC),
     )
     db.add(ev)
     await db.flush()
