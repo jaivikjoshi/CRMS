@@ -17,6 +17,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from crms.config import settings
+from crms.database import get_engine_url_and_connect_args
 from crms.auth.middleware import hash_api_key
 from crms.utils.canonical import bundle_hash
 
@@ -25,7 +26,8 @@ API_KEY = "sk_demo_crms_12345"  # Demo API key - print this for user
 
 
 async def seed():
-    engine = create_async_engine(settings.database_url)
+    url, connect_args = get_engine_url_and_connect_args()
+    engine = create_async_engine(url, connect_args=connect_args)
     async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     async with async_session() as session:

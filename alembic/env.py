@@ -1,12 +1,14 @@
 """Alembic environment configuration."""
 
 import asyncio
+import ssl
 from logging.config import fileConfig
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from crms.config import settings
 from crms.database import Base
@@ -17,7 +19,17 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option("sqlalchemy.url", settings.database_url.replace("+asyncpg", ""))
+# Strip sslmode from URL - asyncpg doesn't accept it; we use connect_args instead
+_db_url = settings.database_url
+if "sslmode=" in _db_url or "ssl=" in _db_url:
+    parsed = urlparse(_db_url)
+    query = parse_qs(parsed.query)
+    query.pop("sslmode", None)
+    query.pop("ssl", None)
+    new_query = urlencode(query, doseq=True)
+    _db_url = urlunparse(parsed._replace(query=new_query))
+
+config.set_main_option("sqlalchemy.url", _db_url)
 
 target_metadata = Base.metadata
 
@@ -46,10 +58,19 @@ def do_run_migrations(connection: Connection) -> None:
 
 async def run_async_migrations() -> None:
     """Run migrations in 'online' mode with async engine."""
-    connectable = async_engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+    url = config.get_main_option("sqlalchemy.url")
+    # Supabase requires SSL - use permissive context to avoid macOS cert chain issues
+    connect_args = {}
+    if "supabase" in url or "pooler.supabase" in url:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        connect_args["ssl"] = ctx
+
+    connectable = create_async_engine(
+        url,
         poolclass=pool.NullPool,
+        connect_args=connect_args,
     )
 
     async with connectable.connect() as connection:
