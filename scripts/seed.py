@@ -7,7 +7,7 @@ Run after migrations: python scripts/seed.py
 import asyncio
 import os
 import sys
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 # Add project root to path
@@ -33,7 +33,7 @@ async def seed():
     async with async_session() as session:
         tenant_id = str(uuid4())
         api_key_hash = hash_api_key(API_KEY)
-        now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        now = datetime.now(UTC)
 
         # Check if tenant exists
         result = await session.execute(
@@ -148,7 +148,7 @@ async def seed():
             await session.execute(
                 text("""
                     INSERT INTO rules (rule_pk, ruleset_id, rule_id, name, priority, rule_json, state, updated_at)
-                    VALUES (:pk, :rsid, :rid, :name, :prio, :json::jsonb, 'draft', :now)
+                    VALUES (:pk, :rsid, :rid, :name, :prio, CAST(:json AS jsonb), 'draft', :now)
                 """),
                 {
                     "pk": str(uuid4()),
@@ -188,16 +188,17 @@ async def seed():
         if result.fetchone():
             print("Version 1.0.0 already published.")
         else:
-                bh = bundle_hash(rules)
+            bundle = {"rules": rules}
+            bh = bundle_hash(rules)
             version_id = str(uuid4())
-            eff_from = "2026-02-01T00:00:00Z"
+            eff_from = datetime(2026, 2, 1, 0, 0, 0, tzinfo=UTC)
 
             # Close previous version if any
             await session.execute(
                 text("""
                     UPDATE ruleset_versions
-                    SET effective_to = :eff::timestamptz
-                    WHERE ruleset_id = :rsid AND (effective_to IS NULL OR effective_to > :eff::timestamptz)
+                    SET effective_to = :eff
+                    WHERE ruleset_id = :rsid AND (effective_to IS NULL OR effective_to > :eff)
                 """),
                 {"eff": eff_from, "rsid": ruleset_id},
             )
@@ -206,7 +207,7 @@ async def seed():
                 text("""
                     INSERT INTO ruleset_versions
                     (version_id, ruleset_id, version, effective_from, effective_to, bundle_hash, bundle_json, published_at, change_summary)
-                    VALUES (:vid, :rsid, '1.0.0', :eff_from::timestamptz, NULL, :bh, :bundle::jsonb, :now::timestamptz, 'Initial seed')
+                    VALUES (:vid, :rsid, '1.0.0', :eff_from, NULL, :bh, CAST(:bundle AS jsonb), :now, 'Initial seed')
                 """),
                 {
                     "vid": version_id,
