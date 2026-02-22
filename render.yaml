@@ -1,10 +1,12 @@
 # Render Blueprint - https://render.com/docs/blueprint-spec
 # Deploy: Connect repo at render.com, or use "New > Blueprint" and paste this
+# FREE TIER: Web service + Postgres. See docs/DEPLOY_RENDER.md for limits.
 
 services:
   - type: web
     name: crms
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: alembic upgrade head && python scripts/seed.py || true && uvicorn crms.main:app --host 0.0.0.0 --port $PORT
     envVars:

@@ -30,11 +30,17 @@ If you already have Supabase:
 
 ---
 
-## Free Tier Notes
+## Free Tier Rules & Limits
 
-- **Spins down** after ~15 min of no traffic. First request after that may take 30–60 seconds.
-- **Postgres** (Render): 1 GB, 90-day limit on free tier.
-- **Supabase**: Free tier is more generous for long-term use.
+| Limit | Value |
+|-------|-------|
+| **Instance hours** | 750/month (resets each month) |
+| **Spins down** | After 15 min inactivity; first request after ~30–60 sec |
+| **Postgres** (Render) | 1 GB, **expires 90 days** after creation |
+| **Filesystem** | Ephemeral (lost on redeploy/restart) |
+| **Use case** | Testing, hobby, demos — not production |
+
+**Recommendation:** For a demo that lasts longer than 90 days, use **Option B (Supabase)** for the database. Supabase free tier does not expire.
 
 ---
 
