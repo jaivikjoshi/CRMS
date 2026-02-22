@@ -1,0 +1,2936 @@
+[
+  {
+    "evaluation_id": "15b77cce-80ee-4e58-8490-72ffbd180730",
+    "request_idempotency_key": "sample_001",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 7.25,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "47d9f59a-711a-4f81-aefe-86c9688bc493",
+    "request_idempotency_key": "sample_002",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "87333b22-3e41-4373-9d49-4b92b40ba6b3",
+    "request_idempotency_key": "sample_003",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3df1d80f-3ad1-4119-8a4b-26d48f9fccf5",
+    "request_idempotency_key": "sample_004",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.07,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "eb1c0061-cb4b-4082-8fb9-a14004cf4c53",
+    "request_idempotency_key": "sample_005",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "623df3c9-84c7-4d72-a48e-6f93c9579531",
+    "request_idempotency_key": "sample_006",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 3.62,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "65486b57-f450-47c9-9258-7897968a2edf",
+    "request_idempotency_key": "sample_007",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.07,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "9a2ce161-3da3-4d37-8fba-7815b608ea27",
+    "request_idempotency_key": "sample_008",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "4bfbe3a1-3c97-4f8b-98c5-e50fbdaa2a3a",
+    "request_idempotency_key": "sample_009",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "df30d1d0-f1e4-4e65-b8ea-d158c7b85cc7",
+    "request_idempotency_key": "sample_010",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 5.44,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3ab2d52d-16d8-4b65-90f4-aa1e2729f8e9",
+    "request_idempotency_key": "sample_011",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "9338c688-6bf0-416b-b2bf-9ad2a8e3f2e4",
+    "request_idempotency_key": "sample_012",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 1.16,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "b0e61086-a847-4c9a-89a3-7c683dd432f1",
+    "request_idempotency_key": "sample_013",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "7a0a6953-b700-49c0-a423-2e90e76216e9",
+    "request_idempotency_key": "sample_014",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 217.43,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "0cf213d5-dabf-473e-8e89-9f4ad87861c6",
+    "request_idempotency_key": "sample_015",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "96bd06f6-a02d-40c5-9488-204798abd32e",
+    "request_idempotency_key": "sample_016",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "e88e3a8e-d271-43f0-b51d-399d0d98d6d4",
+    "request_idempotency_key": "sample_017",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 6.45,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "04879626-8162-4349-abe1-e037eb1a0576",
+    "request_idempotency_key": "sample_018",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "a39d4cac-7d7f-44a3-a261-5cafcf617a40",
+    "request_idempotency_key": "sample_019",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "485753be-5b99-47ac-8299-2b5df51557ad",
+    "request_idempotency_key": "sample_020",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 2.42,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "0bfd6e6f-1315-486a-b1d1-55f098bc0e10",
+    "request_idempotency_key": "sample_021",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "b960b70f-36ba-4013-a0a6-ee2453e092b2",
+    "request_idempotency_key": "sample_022",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 1.81,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "5533f592-b9f6-404c-95e7-66f7fdb64416",
+    "request_idempotency_key": "sample_023",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "24f2a702-56a2-4ad0-b2c0-df8de8690e9c",
+    "request_idempotency_key": "sample_024",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 4.35,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "e5bf086c-d191-425d-8b02-38ca81bec509",
+    "request_idempotency_key": "sample_025",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 14.43,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "86c6d3b3-96da-4a33-8daa-630e0aa7e3e5",
+    "request_idempotency_key": "sample_026",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "fe375f46-aa45-4326-b193-21bd8715fba9",
+    "request_idempotency_key": "sample_027",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.91,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "45f89b3f-d17b-494e-9377-68d464367980",
+    "request_idempotency_key": "sample_028",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3efcebe3-08a9-4b68-b2ff-880cbd2d2b20",
+    "request_idempotency_key": "sample_029",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 3.04,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "ab184173-3346-435b-92b5-d2e9d0b0ed1a",
+    "request_idempotency_key": "sample_030",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "bdadd254-9b54-4ad7-a47b-87641ef2e1d0",
+    "request_idempotency_key": "sample_031",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.72,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "045f9770-29b5-408d-8f04-7cc816efca39",
+    "request_idempotency_key": "sample_032",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "6d9c7685-5611-424f-ba8c-b9f3db3ddf70",
+    "request_idempotency_key": "sample_033",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 2.17,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "9978fef4-68cc-44cf-bef2-318daae906ef",
+    "request_idempotency_key": "sample_034",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "51e5ae97-11c7-460e-9f4c-007accb1b935",
+    "request_idempotency_key": "sample_035",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "5c89828d-f80b-4417-ba3e-77c8b682b303",
+    "request_idempotency_key": "sample_036",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "fb9a553a-9554-4e2b-ac18-856d954e8cab",
+    "request_idempotency_key": "sample_037",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 14.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "2440d895-5f97-44ba-a4b8-7341ffeeec02",
+    "request_idempotency_key": "sample_038",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "a34da58b-cf84-4588-b572-eae7341a690a",
+    "request_idempotency_key": "sample_039",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 29.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "a57965ad-217f-4dd9-a691-0d68aa742562",
+    "request_idempotency_key": "sample_040",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "2350a3fa-d8ac-43ef-9d3f-6aef52ba7e80",
+    "request_idempotency_key": "sample_041",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "5249cebc-43a1-4d48-84ae-3d176f3eabb2",
+    "request_idempotency_key": "sample_042",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "90935faf-6dc7-47f7-958a-374d353b523b",
+    "request_idempotency_key": "sample_043",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 72.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "1ada346d-88e6-48e4-aba4-2ff22e1465c2",
+    "request_idempotency_key": "sample_044",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "42cfe3f4-7be3-46b6-ba6b-4ea0dcb47cb4",
+    "request_idempotency_key": "sample_045",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 145.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "0d35553e-8cc5-4688-a4df-b04e7b5172a3",
+    "request_idempotency_key": "sample_046",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "15d9a6fa-842d-4917-bd5a-35a6d2273808",
+    "request_idempotency_key": "sample_047",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "ccde85a3-6ba5-4bf6-9b28-d3958c7c7bd8",
+    "request_idempotency_key": "sample_048",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "33d343dc-23ca-4fc3-a163-1ffe0f858ec5",
+    "request_idempotency_key": "sample_049",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 543.75,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "1e3bfe53-e2d5-49ee-8eb4-3d7a68de3248",
+    "request_idempotency_key": "sample_050",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "689aaca4-02da-4c48-bf63-01cc760641d3",
+    "request_idempotency_key": "sample_051",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.72,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "338b212c-12a3-44f9-a402-a38975e25727",
+    "request_idempotency_key": "sample_052",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "d579bb29-8030-4bda-bf3a-f582775d81ac",
+    "request_idempotency_key": "sample_053",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "5727b3dc-01db-4108-8c1f-1c7f2648d74d",
+    "request_idempotency_key": "sample_054",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "e67bced7-e089-4f43-9eab-8b2ce8ee7f69",
+    "request_idempotency_key": "sample_055",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 7.18,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3c698386-90f2-4530-9536-f19ab5961eb3",
+    "request_idempotency_key": "sample_056",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "36dcc254-0115-45b2-b589-0d95c931d81e",
+    "request_idempotency_key": "sample_057",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 14.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3ace0ea2-32a2-4d31-81b4-c90c23626edd",
+    "request_idempotency_key": "sample_058",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "773d2107-478b-4745-bc5e-72f045b871dd",
+    "request_idempotency_key": "sample_059",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "f1b23b87-e712-437c-af4e-35288e107870",
+    "request_idempotency_key": "sample_060",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "97165c75-8b7e-430f-8d7a-5991ac6c4c70",
+    "request_idempotency_key": "sample_061",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 43.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "08ca9821-3612-477f-973f-25ff6a7c210b",
+    "request_idempotency_key": "sample_062",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "8506d058-a3ab-4799-9a0a-474c7cb9448e",
+    "request_idempotency_key": "sample_063",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 72.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "926d4463-c1f0-43df-892a-e49f818f0948",
+    "request_idempotency_key": "sample_064",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "e58d0630-403b-4163-8c50-110dddf907b4",
+    "request_idempotency_key": "sample_065",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "95913bda-3957-443d-ade1-8dead78d9c2a",
+    "request_idempotency_key": "sample_066",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "70a7a500-b3b3-4afe-9064-7bf8687c6870",
+    "request_idempotency_key": "sample_067",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 217.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "74bf229e-b598-4d51-8080-3da696def7ef",
+    "request_idempotency_key": "sample_068",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "08cb6b90-8b6f-4eda-b5b2-d426116ff4ad",
+    "request_idempotency_key": "sample_069",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 543.75,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "0fdbd4e1-92cb-4087-80ea-31d321bbc93d",
+    "request_idempotency_key": "sample_070",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "0d95907a-04fb-481e-9cc9-12f0d84f49d4",
+    "request_idempotency_key": "sample_071",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "19749498-04f7-4dd9-83f2-48b87d3f4fbd",
+    "request_idempotency_key": "sample_072",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "2b5524b2-978e-4a1d-b50f-2bd0acd3191e",
+    "request_idempotency_key": "sample_073",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 2.17,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "51c9963a-da75-43fd-a4a8-8ddd17f27c58",
+    "request_idempotency_key": "sample_074",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "4b420b19-31d9-4d1a-a02f-e4acba38c956",
+    "request_idempotency_key": "sample_075",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 7.18,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "c0f8ceb5-0742-42d8-945f-4085fd2af98a",
+    "request_idempotency_key": "sample_076",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "bf5af0b9-88e6-4c06-94f4-6ad6d8fe9166",
+    "request_idempotency_key": "sample_077",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "9c3bb1cc-c2cf-4901-af5f-6729ea39469a",
+    "request_idempotency_key": "sample_078",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "f1e8f05f-f63e-4aba-8c88-996e0bc876ab",
+    "request_idempotency_key": "sample_079",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 29.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "1094aebb-bddd-4192-ae90-73b5748902dc",
+    "request_idempotency_key": "sample_080",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "ff34ef62-476d-4686-ba79-bb12d1dad317",
+    "request_idempotency_key": "sample_081",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 43.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "6e22b6ed-bcab-4fd1-a0ba-42007ef6cc29",
+    "request_idempotency_key": "sample_082",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "71144f47-0d8e-41d8-855b-4a5e38d1167d",
+    "request_idempotency_key": "sample_083",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "fbb8bb7e-d266-4d19-a2ce-4a0a0a29b168",
+    "request_idempotency_key": "sample_084",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "3d1243d0-f8ac-45ab-a6f3-2ed9eb46555f",
+    "request_idempotency_key": "sample_085",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 145.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "d4754b60-1a5f-46cb-b975-64c3aa0a2ea2",
+    "request_idempotency_key": "sample_086",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "ebeaa152-424b-4859-ae4d-bfebd3bfb2f8",
+    "request_idempotency_key": "sample_087",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 217.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "f89e6965-0e9d-405c-8bc7-a729b917f518",
+    "request_idempotency_key": "sample_088",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "c691eaf2-fb2c-4625-9eb0-10e64b164e60",
+    "request_idempotency_key": "sample_089",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "b6d033ed-c811-47a2-89f9-163c2c2007c4",
+    "request_idempotency_key": "sample_090",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "1c806ab9-a7fe-4073-98c3-9ed80234ff38",
+    "request_idempotency_key": "sample_091",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 0.72,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "6cdf252b-6354-429a-b6a7-399482a877af",
+    "request_idempotency_key": "sample_092",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "f5c114af-ad92-4990-82a9-25bbf0a71e7e",
+    "request_idempotency_key": "sample_093",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 2.17,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "af150445-b87d-4f74-b7fb-9d14a814c743",
+    "request_idempotency_key": "sample_094",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "595c9354-f5c6-4121-b68a-7e5883277078",
+    "request_idempotency_key": "sample_095",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "d126a1f2-6e39-4669-a010-75c31c21681d",
+    "request_idempotency_key": "sample_096",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "7551cd86-ed8b-4cae-8080-e05ff8105dba",
+    "request_idempotency_key": "sample_097",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 14.5,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "6bb59ff2-834d-4ecc-84fd-e9935b75ad91",
+    "request_idempotency_key": "sample_098",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-002",
+          "name": "CA B2B SaaS exempt",
+          "because": "CA B2B SaaS exempt."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "4108cd32-5bae-4d93-a12b-6e80a4e3492c",
+    "request_idempotency_key": "sample_099",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": true,
+      "rate": 0.0725,
+      "tax_amount": 29.0,
+      "obligations": [
+        {
+          "type": "NEXUS_MONITOR",
+          "threshold": 500000,
+          "window_days": 365
+        }
+      ]
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-001",
+          "name": "CA SaaS consumer taxable",
+          "because": "CA SaaS sold to consumers taxable."
+        }
+      ]
+    }
+  },
+  {
+    "evaluation_id": "735eb0b4-6424-4a5e-a5af-45ee4677be2c",
+    "request_idempotency_key": "sample_100",
+    "ruleset": {
+      "jurisdiction": "US-CA",
+      "tax_type": "SALES"
+    },
+    "version": {
+      "version": "1.0.0",
+      "bundle_hash": "2119aa49ebaf19b321948c817a34689c43f02d648aa2fc3bcb3c22df6f53a4ca"
+    },
+    "result": {
+      "taxable": false,
+      "rate": 0.0,
+      "tax_amount": 0.0,
+      "obligations": []
+    },
+    "explanation": {
+      "fired_rules": [
+        {
+          "rule_id": "US-CA-SALES-DEFAULT",
+          "name": "Default fallback",
+          "because": "Default: not taxable."
+        }
+      ]
+    }
+  }
+]

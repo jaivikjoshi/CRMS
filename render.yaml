@@ -1,0 +1,24 @@
+# Render Blueprint - https://render.com/docs/blueprint-spec
+# Deploy: Connect repo at render.com, or use "New > Blueprint" and paste this
+
+services:
+  - type: web
+    name: crms
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && python scripts/seed.py || true && uvicorn crms.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: crms-db
+          property: connectionString
+      - key: API_KEY_HASH_SALT
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+
+databases:
+  - name: crms-db
+    databaseName: crms
+    user: crms
+    plan: free
