@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f0f12;
+  color: #e4e4e7;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: #fafafa;
+}
+
+.subtitle {
+  color: #71717a;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+section {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+section h2 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+  color: #71717a;
+  margin-bottom: 0.25rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  color: #fafafa;
+  margin-bottom: 0.75rem;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.preset {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  color: #a1a1aa;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.preset:hover {
+  background: #3f3f46;
+  color: #fafafa;
+  border-color: #52525b;
+}
+
+button[type="submit"] {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button[type="submit"]:hover {
+  background: #4f46e5;
+}
+
+button[type="submit"]:disabled {
+  background: #3f3f46;
+  color: #71717a;
+  cursor: not-allowed;
+}
+
+.response {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  background: #0c0c0e;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.response.success {
+  border-color: #22c55e;
+}
+
+.response.error {
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+.result-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.result-badge.taxable {
+  background: #22c55e33;
+  color: #22c55e;
+}
+
+.result-badge.exempt {
+  background: #71717a33;
+  color: #a1a1aa;
+}
+
+.loading {
+  color: #71717a;
+  font-style: italic;
+}

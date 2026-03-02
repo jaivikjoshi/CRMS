@@ -49,8 +49,26 @@ def _eval_condition(transaction: dict, cond: dict) -> bool:
         return val in allowed if isinstance(allowed, (list, tuple)) else False
     if "exists" in cond:
         path = cond["exists"]
+        if isinstance(path, list):
+            path = path[0]
         val = _get_path(transaction, path)
         return val is not None and val != ""
+    if "not_exists" in cond:
+        path = cond["not_exists"]
+        if isinstance(path, list):
+            path = path[0]
+        val = _get_path(transaction, path)
+        return val is None or val == ""
+    if "path_neq" in cond:
+        path1, path2 = cond["path_neq"]
+        v1 = _get_path(transaction, path1)
+        v2 = _get_path(transaction, path2)
+        return v1 is not None and v2 is not None and v1 != v2
+    if "path_eq" in cond:
+        path1, path2 = cond["path_eq"]
+        v1 = _get_path(transaction, path1)
+        v2 = _get_path(transaction, path2)
+        return v1 is not None and v2 is not None and v1 == v2
     if "all" in cond:
         return all(_eval_condition(transaction, c) for c in cond["all"])
     if "any" in cond:
@@ -75,6 +93,8 @@ def evaluate_rules(
         "rate": 0.0,
         "tax_amount": 0.0,
         "obligations": [],
+        "rate_components": [],
+        "risk_flags": [],
     }
     fired: list[FiredRule] = []
 
@@ -90,6 +110,8 @@ def evaluate_rules(
             result["taxable"] = bool(set_vals["taxable"])
         if "rate" in set_vals:
             result["rate"] = float(set_vals["rate"])
+        if "rate_components" in set_vals:
+            result["rate_components"] = list(set_vals["rate_components"])
         result["tax_amount"] = round(result["rate"] * amount, 2)
 
         obligations = then.get("emit_obligations") or []
@@ -99,7 +121,14 @@ def evaluate_rules(
                     type=obl.get("type", ""),
                     threshold=obl.get("threshold"),
                     window_days=obl.get("window_days"),
+                    message=obl.get("message"),
                 )
+            )
+
+        risk_flags = then.get("add_risk_flags") or []
+        for rf in risk_flags:
+            result["risk_flags"].append(
+                {"type": rf.get("type", ""), "severity": rf.get("severity", "")}
             )
 
         fired.append(

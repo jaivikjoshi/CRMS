@@ -1,0 +1,172 @@
+"""
+Compliance-grade rulesets: US-CA/SALES, EU/VAT, CA-ON/HST.
+Transaction schema: jurisdiction, tax_type, amount, currency,
+buyer.{type,vat_id,vat_id_confidence}, product.{category,subtype,...},
+evidence.{billing_country,ip_country,resolved_country,resolved_region,resolved_confidence,locality_code},
+marketplace.{is_facilitated}, fulfillment.{ship_to_region}, metrics.{ca_revenue_t12m,eu_b2c_revenue_t12m},
+doc.{resale_cert_valid}, event.{type}.
+"""
+
+COMPLIANCE_RULESETS = [
+    {
+        "jurisdiction": "US-CA",
+        "tax_type": "SALES",
+        "name": "CA Sales Tax (compliance-grade)",
+        "rules": [
+            {
+                "rule_id": "US-CA-SALES-000",
+                "name": "Guardrail: ruleset mismatch",
+                "priority": 10000,
+                "when": {"any": [{"neq": ["transaction.jurisdiction", "US-CA"]}, {"neq": ["transaction.tax_type", "SALES"]}]},
+                "then": {"set": {"taxable": False, "rate": 0.0}, "emit_obligations": [{"type": "INVALID_INPUT", "message": "Wrong ruleset for transaction.jurisdiction/tax_type."}]},
+                "because": "Prevents accidental cross-jurisdiction evaluation.",
+            },
+            {
+                "rule_id": "US-CA-SALES-005",
+                "name": "Refunds/chargebacks: output negative tax matching original policy",
+                "priority": 9900,
+                "when": {"in": ["transaction.event.type", ["REFUND", "CHARGEBACK"]]},
+                "then": {
+                    "set": {"taxable": True, "rate": 0.0725},
+                    "emit_obligations": [
+                        {"type": "CREDIT_NOTE_REQUIRED", "message": "Issue credit note/adjustment record for audit trail."},
+                        {"type": "LINK_ORIGINAL_SALE", "message": "Store reference to original sale evaluation_id for replay/defensibility."},
+                    ],
+                },
+                "because": "Compliance systems need explicit handling of negative events and audit linkage.",
+            },
+            {
+                "rule_id": "US-CA-SALES-010",
+                "name": "Marketplace facilitated sale: marketplace is tax collector",
+                "priority": 9700,
+                "when": {"all": [{"exists": ["transaction.marketplace.is_facilitated"]}, {"eq": ["transaction.marketplace.is_facilitated", True]}]},
+                "then": {
+                    "set": {"taxable": False, "rate": 0.0},
+                    "emit_obligations": [
+                        {"type": "MARKETPLACE_FACILITATOR", "message": "Marketplace facilitated sale; marketplace may be responsible for collection/remittance."},
+                        {"type": "INVOICE_DISCLOSURE", "message": "Invoice should indicate taxes (if any) collected by marketplace."},
+                    ],
+                },
+                "because": "Facilitated sales often shift collection responsibility.",
+            },
+            {
+                "rule_id": "US-CA-SALES-020",
+                "name": "Evidence confidence low: require additional location verification",
+                "priority": 9500,
+                "when": {"all": [{"exists": ["transaction.evidence.resolved_confidence"]}, {"lt": ["transaction.evidence.resolved_confidence", 0.7]}]},
+                "then": {
+                    "set": {"taxable": True, "rate": 0.0725},
+                    "emit_obligations": [{"type": "EVIDENCE_REQUIRED", "message": "Low confidence in buyer location; capture additional proof (billing+IP+bank or address validation)."}],
+                    "add_risk_flags": [{"type": "LOW_LOCATION_CONFIDENCE", "severity": "MEDIUM"}],
+                },
+                "because": "Compliance-grade systems track evidence sufficiency.",
+            },
+            {
+                "rule_id": "US-CA-SALES-030",
+                "name": "Conflicting evidence: require third signal",
+                "priority": 9400,
+                "when": {"all": [{"exists": ["transaction.evidence.billing_country"]}, {"exists": ["transaction.evidence.ip_country"]}, {"path_neq": ["transaction.evidence.billing_country", "transaction.evidence.ip_country"]}]},
+                "then": {
+                    "set": {"taxable": True, "rate": 0.0725},
+                    "emit_obligations": [{"type": "EVIDENCE_REQUIRED", "message": "Billing and IP conflict; collect a third signal (bank country, phone country, shipping address) and store for audit."}],
+                    "add_risk_flags": [{"type": "CONFLICTING_LOCATION_EVIDENCE", "severity": "HIGH"}],
+                },
+                "because": "Conflicting evidence creates audit risk; must be flagged.",
+            },
+            {
+                "rule_id": "US-CA-SALES-100",
+                "name": "Resale certificate present and valid => exempt (B2B physical goods)",
+                "priority": 9000,
+                "when": {"all": [{"eq": ["transaction.buyer.type", "BUSINESS"]}, {"in": ["transaction.product.category", ["PHYSICAL_GOODS", "TANGIBLE"]]}, {"exists": ["transaction.doc.resale_cert_valid"]}, {"eq": ["transaction.doc.resale_cert_valid", True]}]},
+                "then": {"set": {"taxable": False, "rate": 0.0}, "emit_obligations": [{"type": "DOCUMENT_RETENTION", "message": "Retain resale certificate for audit; store doc hash and validity metadata."}]},
+                "because": "Common compliance path: exemption requires documentation + retention.",
+            },
+            {
+                "rule_id": "US-CA-SALES-110",
+                "name": "Resale certificate missing => taxable (B2B physical goods)",
+                "priority": 8900,
+                "when": {"all": [{"eq": ["transaction.buyer.type", "BUSINESS"]}, {"in": ["transaction.product.category", ["PHYSICAL_GOODS", "TANGIBLE"]]}, {"any": [{"not_exists": ["transaction.doc.resale_cert_valid"]}, {"eq": ["transaction.doc.resale_cert_valid", False]}]}]},
+                "then": {
+                    "set": {"taxable": True, "rate": 0.0725, "rate_components": [{"name": "CA_BASE", "rate": 0.0725}]},
+                    "emit_obligations": [{"type": "EXEMPTION_CERT_CHECK", "message": "If buyer claims resale/exemption, capture certificate before finalizing exemption."}],
+                },
+                "because": "Without documentation, default to taxable to avoid under-collection risk.",
+            },
+            {
+                "rule_id": "US-CA-SALES-200",
+                "name": "Consumer physical goods shipped to CA => taxable",
+                "priority": 8000,
+                "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["PHYSICAL_GOODS", "TANGIBLE"]]}, {"exists": ["transaction.fulfillment.ship_to_region"]}, {"eq": ["transaction.fulfillment.ship_to_region", "CA"]}]},
+                "then": {"set": {"taxable": True, "rate": 0.0725, "rate_components": [{"name": "CA_BASE", "rate": 0.0725}]}},
+                "because": "Shipping destination is a major driver of sales tax.",
+            },
+            {
+                "rule_id": "US-CA-SALES-210",
+                "name": "Digital goods / SaaS to CA consumer => taxable",
+                "priority": 7800,
+                "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["DIGITAL_GOODS", "SAAS", "SERVICES"]]}, {"exists": ["transaction.evidence.resolved_country"]}, {"eq": ["transaction.evidence.resolved_country", "US"]}, {"exists": ["transaction.evidence.resolved_region"]}, {"eq": ["transaction.evidence.resolved_region", "CA"]}]},
+                "then": {"set": {"taxable": True, "rate": 0.0725, "rate_components": [{"name": "CA_BASE", "rate": 0.0725}]}, "emit_obligations": [{"type": "LOCATION_EVIDENCE_RETENTION", "message": "Retain location signals used to source transaction for audit."}]},
+                "because": "Digital delivery uses evidence-based sourcing; store the evidence.",
+            },
+            {
+                "rule_id": "US-CA-SALES-211",
+                "name": "Digital/SaaS to CA consumer (simplified: no evidence)",
+                "priority": 7750,
+                "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["DIGITAL_GOODS", "SAAS", "SERVICES"]]}]},
+                "then": {"set": {"taxable": True, "rate": 0.0725}},
+                "because": "Fallback when evidence not provided; taxable at base rate.",
+            },
+            {
+                "rule_id": "US-CA-SALES-250",
+                "name": "Local district tax: LA/SF city codes",
+                "priority": 7600,
+                "when": {"all": [{"exists": ["transaction.evidence.locality_code"]}, {"in": ["transaction.evidence.locality_code", ["LA_CITY", "SF_CITY"]]}]},
+                "then": {"set": {"taxable": True, "rate": 0.095, "rate_components": [{"name": "CA_BASE", "rate": 0.0725}, {"name": "CA_DISTRICT", "rate": 0.0225}]}, "emit_obligations": [{"type": "JURISDICTION_DETAIL", "message": "District tax applied based on locality_code; store mapping version used."}]},
+                "because": "Shows rate composition and locality sourcing like real sales tax systems.",
+            },
+            {
+                "rule_id": "US-CA-SALES-300",
+                "name": "Economic nexus threshold reached",
+                "priority": 7000,
+                "when": {"all": [{"exists": ["transaction.metrics.ca_revenue_t12m"]}, {"gte": ["transaction.metrics.ca_revenue_t12m", 500000]}]},
+                "then": {"set": {"taxable": True, "rate": 0.0725}, "emit_obligations": [{"type": "NEXUS_THRESHOLD_REACHED", "threshold": 500000, "window_days": 365, "message": "CA economic nexus threshold reached. Trigger registration + filing workflow."}, {"type": "FILING_CALENDAR", "message": "Ensure filing calendar is created/updated for CA periods."}]},
+                "because": "Compliance is about obligations, not only tax calculation.",
+            },
+            {
+                "rule_id": "US-CA-SALES-999",
+                "name": "Fallback: non-taxable (fail-safe)",
+                "priority": 1,
+                "when": {"exists": ["transaction.amount"]},
+                "then": {"set": {"taxable": False, "rate": 0.0}},
+                "because": "Safe default when no rule matches.",
+            },
+        ],
+    },
+    {
+        "jurisdiction": "EU",
+        "tax_type": "VAT",
+        "name": "EU VAT (compliance-grade)",
+        "rules": [
+            {"rule_id": "EU-VAT-000", "name": "Guardrail: ruleset mismatch", "priority": 10000, "when": {"any": [{"neq": ["transaction.jurisdiction", "EU"]}, {"neq": ["transaction.tax_type", "VAT"]}]}, "then": {"set": {"taxable": False, "rate": 0.0}, "emit_obligations": [{"type": "INVALID_INPUT", "message": "Wrong ruleset for transaction.jurisdiction/tax_type."}]}, "because": "Prevents incorrect routing."},
+            {"rule_id": "EU-VAT-010", "name": "Refund/chargeback handling", "priority": 9900, "when": {"in": ["transaction.event.type", ["REFUND", "CHARGEBACK"]]}, "then": {"set": {"taxable": True, "rate": 0.20}, "emit_obligations": [{"type": "CREDIT_NOTE_REQUIRED", "message": "Issue credit note and link to original sale for VAT audit trail."}]}, "because": "Refund flows are compliance-critical."},
+            {"rule_id": "EU-VAT-100", "name": "EU B2B with valid VAT ID => reverse charge", "priority": 9500, "when": {"all": [{"eq": ["transaction.buyer.type", "BUSINESS"]}, {"exists": ["transaction.buyer.vat_id"]}, {"exists": ["transaction.buyer.vat_id_confidence"]}, {"gte": ["transaction.buyer.vat_id_confidence", 0.8]}]}, "then": {"set": {"taxable": True, "rate": 0.0}, "emit_obligations": [{"type": "REVERSE_CHARGE_APPLIED", "message": "Do not collect VAT; buyer accounts for VAT. Store VAT ID validation result."}, {"type": "INVOICE_TEXT", "message": "Invoice must include reverse charge wording and both VAT IDs where required."}, {"type": "VAT_ID_RETENTION", "message": "Retain VAT ID + validation proof for audit."}]}, "because": "Reverse charge is a key branch in EU VAT logic."},
+            {"rule_id": "EU-VAT-120", "name": "EU B2B missing/invalid VAT ID => treat as B2C", "priority": 9300, "when": {"all": [{"eq": ["transaction.buyer.type", "BUSINESS"]}, {"any": [{"not_exists": ["transaction.buyer.vat_id"]}, {"lt": ["transaction.buyer.vat_id_confidence", 0.8]}]}]}, "then": {"set": {"taxable": True, "rate": 0.20}, "emit_obligations": [{"type": "VAT_ID_REQUIRED", "message": "Business buyer missing/invalid VAT ID; VAT collected as B2C until VAT ID validated."}], "add_risk_flags": [{"type": "B2B_WITHOUT_VAT_ID", "severity": "MEDIUM"}]}, "because": "Shows how compliance systems handle missing identifiers."},
+            {"rule_id": "EU-VAT-200", "name": "B2C digital services: require two non-conflicting evidence signals", "priority": 9000, "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["SAAS", "DIGITAL_GOODS", "SERVICES"]]}]}, "then": {"set": {"taxable": True, "rate": 0.20}, "emit_obligations": [{"type": "EVIDENCE_REQUIRED", "message": "Collect two non-conflicting location signals (billing+IP; or billing+bank) for EU B2C digital supplies."}, {"type": "EVIDENCE_RETENTION", "message": "Store evidence signals and mapping version used for sourcing."}]}, "because": "EU B2C digital VAT hinges on location evidence."},
+            {"rule_id": "EU-VAT-210", "name": "Conflicting evidence => require third signal", "priority": 8900, "when": {"all": [{"exists": ["transaction.evidence.billing_country"]}, {"exists": ["transaction.evidence.ip_country"]}, {"path_neq": ["transaction.evidence.billing_country", "transaction.evidence.ip_country"]}]}, "then": {"set": {"taxable": True, "rate": 0.20}, "emit_obligations": [{"type": "EVIDENCE_REQUIRED", "message": "Billing and IP mismatch; collect third signal (bank country, SIM, address validation)."}], "add_risk_flags": [{"type": "CONFLICTING_LOCATION_EVIDENCE", "severity": "HIGH"}]}, "because": "Evidence mismatch is audit-sensitive."},
+            {"rule_id": "EU-VAT-300", "name": "OSS/registration monitor when EU B2C revenue exceeds threshold", "priority": 8000, "when": {"all": [{"exists": ["transaction.metrics.eu_b2c_revenue_t12m"]}, {"gte": ["transaction.metrics.eu_b2c_revenue_t12m", 10000]}]}, "then": {"set": {"taxable": True, "rate": 0.20}, "emit_obligations": [{"type": "REGISTRATION_MONITOR", "threshold": 10000, "window_days": 365, "message": "EU B2C threshold reached; evaluate OSS VAT registration and filing."}, {"type": "FILING_CALENDAR", "message": "Ensure filing schedule/periods created for OSS workflow."}]}, "because": "Obligation monitoring is part of compliance."},
+            {"rule_id": "EU-VAT-999", "name": "Fallback: non-taxable", "priority": 1, "when": {"exists": ["transaction.amount"]}, "then": {"set": {"taxable": False, "rate": 0.0}}, "because": "Safe default."},
+        ],
+    },
+    {
+        "jurisdiction": "CA-ON",
+        "tax_type": "HST",
+        "name": "Ontario HST (compliance-grade)",
+        "rules": [
+            {"rule_id": "CA-ON-HST-010", "name": "Digital/SaaS/services to ON consumer taxable at 13%", "priority": 9000, "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["SAAS", "DIGITAL_GOODS", "SERVICES"]]}, {"exists": ["transaction.evidence.resolved_region"]}, {"eq": ["transaction.evidence.resolved_region", "ON"]}]}, "then": {"set": {"taxable": True, "rate": 0.13}, "emit_obligations": [{"type": "EVIDENCE_RETENTION", "message": "Store location signals used to source supply to Ontario."}]}, "because": "Shows place-of-supply style sourcing via evidence."},
+            {"rule_id": "CA-ON-HST-011", "name": "Digital/SaaS to ON consumer (simplified)", "priority": 8950, "when": {"all": [{"eq": ["transaction.buyer.type", "CONSUMER"]}, {"in": ["transaction.product.category", ["SAAS", "DIGITAL_GOODS", "SERVICES"]]}]}, "then": {"set": {"taxable": True, "rate": 0.13}}, "because": "Fallback when evidence not provided."},
+            {"rule_id": "CA-ON-HST-050", "name": "Conflicting evidence => require additional proof", "priority": 8800, "when": {"all": [{"exists": ["transaction.evidence.billing_country"]}, {"exists": ["transaction.evidence.ip_country"]}, {"path_neq": ["transaction.evidence.billing_country", "transaction.evidence.ip_country"]}]}, "then": {"set": {"taxable": True, "rate": 0.13}, "emit_obligations": [{"type": "EVIDENCE_REQUIRED", "message": "Billing and IP conflict; collect bank country or address validation for defensibility."}], "add_risk_flags": [{"type": "CONFLICTING_LOCATION_EVIDENCE", "severity": "MEDIUM"}]}, "because": "Evidence mismatch is a compliance risk."},
+            {"rule_id": "CA-ON-HST-200", "name": "Registration monitor when Canada revenue exceeds small supplier threshold", "priority": 8000, "when": {"all": [{"exists": ["transaction.metrics.ca_revenue_t12m"]}, {"gte": ["transaction.metrics.ca_revenue_t12m", 30000]}]}, "then": {"set": {"taxable": True, "rate": 0.13}, "emit_obligations": [{"type": "REGISTRATION_MONITOR", "threshold": 30000, "window_days": 365, "message": "Small supplier threshold exceeded; evaluate GST/HST registration and filing obligations."}]}, "because": "Obligations are core to compliance platforms."},
+            {"rule_id": "CA-ON-HST-999", "name": "Fallback", "priority": 1, "when": {"exists": ["transaction.amount"]}, "then": {"set": {"taxable": False, "rate": 0.0}}, "because": "Safe default."},
+        ],
+    },
+]

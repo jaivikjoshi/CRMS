@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-Seed script: creates tenant, API key, ruleset US-CA/SALES, rules, and publishes v1.0.0.
+Seed script: creates tenant, API key, compliance-grade rulesets (US-CA, EU, CA-ON, US-TX, US-NY).
 Run after migrations: python scripts/seed.py
+See docs/TRANSACTION_SCHEMA.md for transaction field assumptions.
 """
 
 import asyncio
+import json
 import os
 import sys
 from datetime import UTC, datetime
@@ -16,13 +18,31 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-from crms.config import settings
 from crms.database import get_engine_url_and_connect_args
 from crms.auth.middleware import hash_api_key
 from crms.utils.canonical import bundle_hash
 
+# Load compliance rulesets from same directory
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from compliance_rulesets import COMPLIANCE_RULESETS
+
 
 API_KEY = "sk_demo_crms_12345"  # Demo API key - print this for user
+
+# Simple rulesets (US-TX, US-NY) for backward compat
+SIMPLE_RULESETS = [
+    {"jurisdiction": "US-TX", "tax_type": "SALES", "name": "TX Sales Tax", "rules": [
+        {"rule_id": "US-TX-SALES-001", "name": "TX SaaS/digital consumer taxable", "priority": 100, "when": {"all": [{"eq": ["transaction.jurisdiction", "US-TX"]}, {"in": ["transaction.product.category", ["SAAS", "DIGITAL_GOODS"]]}, {"eq": ["transaction.buyer.type", "CONSUMER"]}]}, "then": {"set": {"taxable": True, "rate": 0.0625}, "emit_obligations": []}, "because": "TX SaaS/digital sold to consumers taxable at 6.25%."},
+        {"rule_id": "US-TX-SALES-002", "name": "TX B2B SaaS/digital exempt", "priority": 95, "when": {"all": [{"eq": ["transaction.jurisdiction", "US-TX"]}, {"in": ["transaction.product.category", ["SAAS", "DIGITAL_GOODS"]]}, {"eq": ["transaction.buyer.type", "BUSINESS"]}]}, "then": {"set": {"taxable": False, "rate": 0}, "emit_obligations": []}, "because": "TX B2B SaaS/digital exempt."},
+        {"rule_id": "US-TX-SALES-DEFAULT", "name": "Default fallback", "priority": 0, "when": {"eq": ["transaction.jurisdiction", "US-TX"]}, "then": {"set": {"taxable": False, "rate": 0}, "emit_obligations": []}, "because": "Default: not taxable."},
+    ]},
+    {"jurisdiction": "US-NY", "tax_type": "SALES", "name": "NY Sales Tax", "rules": [
+        {"rule_id": "US-NY-SALES-001", "name": "NY SaaS consumer taxable", "priority": 100, "when": {"all": [{"eq": ["transaction.jurisdiction", "US-NY"]}, {"eq": ["transaction.product.category", "SAAS"]}, {"eq": ["transaction.buyer.type", "CONSUMER"]}]}, "then": {"set": {"taxable": True, "rate": 0.04}, "emit_obligations": []}, "because": "NY SaaS sold to consumers taxable at 4%."},
+        {"rule_id": "US-NY-SALES-DEFAULT", "name": "Default fallback", "priority": 0, "when": {"eq": ["transaction.jurisdiction", "US-NY"]}, "then": {"set": {"taxable": False, "rate": 0}, "emit_obligations": []}, "because": "Default: not taxable."},
+    ]},
+]
+
+RULESETS = COMPLIANCE_RULESETS + SIMPLE_RULESETS
 
 
 async def seed():
@@ -54,146 +74,82 @@ async def seed():
             )
             await session.commit()
 
-        # Get or create ruleset
-        result = await session.execute(
-            text("""
-                SELECT ruleset_id FROM rulesets
-                WHERE tenant_id = :tid AND jurisdiction = 'US-CA' AND tax_type = 'SALES'
-            """),
-            {"tid": tenant_id},
-        )
-        row = result.fetchone()
-        if row:
-            ruleset_id = str(row[0])
-            print("Ruleset already exists, re-seeding rules.")
-        else:
-            ruleset_id = str(uuid4())
-            await session.execute(
+        # Seed each ruleset
+        for rs_def in RULESETS:
+            jur, tax_type, rs_name = rs_def["jurisdiction"], rs_def["tax_type"], rs_def["name"]
+            result = await session.execute(
                 text("""
-                    INSERT INTO rulesets (ruleset_id, tenant_id, jurisdiction, tax_type, name, created_at)
-                    VALUES (:rid, :tid, 'US-CA', 'SALES', 'CA Sales Tax', :now)
+                    SELECT ruleset_id FROM rulesets
+                    WHERE tenant_id = :tid AND jurisdiction = :jur AND tax_type = :tax
                 """),
-                {"rid": ruleset_id, "tid": tenant_id, "now": now},
+                {"tid": tenant_id, "jur": jur, "tax": tax_type},
+            )
+            row = result.fetchone()
+            if row:
+                ruleset_id = str(row[0])
+                print(f"Ruleset {jur}/{tax_type} exists, re-seeding rules.")
+            else:
+                ruleset_id = str(uuid4())
+                await session.execute(
+                    text("""
+                        INSERT INTO rulesets (ruleset_id, tenant_id, jurisdiction, tax_type, name, created_at)
+                        VALUES (:rid, :tid, :jur, :tax, :name, :now)
+                    """),
+                    {"rid": ruleset_id, "tid": tenant_id, "jur": jur, "tax": tax_type, "name": rs_name, "now": now},
+                )
+                await session.commit()
+
+            await session.execute(
+                text("DELETE FROM rules WHERE ruleset_id = :rsid"),
+                {"rsid": ruleset_id},
             )
             await session.commit()
 
-        # Delete existing draft rules and re-insert
-        await session.execute(
-            text("DELETE FROM rules WHERE ruleset_id = :rsid"),
-            {"rsid": ruleset_id},
-        )
-        await session.commit()
+            for r in rs_def["rules"]:
+                rule_json = {**r, "rule_id": r["rule_id"], "name": r["name"], "priority": r["priority"]}
+                await session.execute(
+                    text("""
+                        INSERT INTO rules (rule_pk, ruleset_id, rule_id, name, priority, rule_json, state, updated_at)
+                        VALUES (:pk, :rsid, :rid, :name, :prio, CAST(:json AS jsonb), 'draft', :now)
+                    """),
+                    {
+                        "pk": str(uuid4()),
+                        "rsid": ruleset_id,
+                        "rid": r["rule_id"],
+                        "name": r["name"],
+                        "prio": r["priority"],
+                        "json": json.dumps(rule_json),
+                        "now": now,
+                    },
+                )
+            await session.commit()
 
-        # Create rules (draft)
-        rules_data = [
-            {
-                "rule_id": "US-CA-SALES-001",
-                "name": "CA SaaS consumer taxable",
-                "priority": 10,
-                "rule_json": {
-                    "rule_id": "US-CA-SALES-001",
-                    "name": "CA SaaS consumer taxable",
-                    "priority": 10,
-                    "when": {
-                        "all": [
-                            {"eq": ["transaction.jurisdiction", "US-CA"]},
-                            {"eq": ["transaction.product.category", "SAAS"]},
-                            {"eq": ["transaction.buyer.type", "CONSUMER"]},
-                        ]
-                    },
-                    "then": {
-                        "set": {"taxable": True, "rate": 0.0725},
-                        "emit_obligations": [
-                            {"type": "NEXUS_MONITOR", "threshold": 500000, "window_days": 365}
-                        ],
-                    },
-                    "because": "CA SaaS sold to consumers taxable.",
-                },
-            },
-            {
-                "rule_id": "US-CA-SALES-002",
-                "name": "CA B2B SaaS exempt",
-                "priority": 5,
-                "rule_json": {
-                    "rule_id": "US-CA-SALES-002",
-                    "name": "CA B2B SaaS exempt",
-                    "priority": 5,
-                    "when": {
-                        "all": [
-                            {"eq": ["transaction.jurisdiction", "US-CA"]},
-                            {"eq": ["transaction.product.category", "SAAS"]},
-                            {"eq": ["transaction.buyer.type", "BUSINESS"]},
-                        ]
-                    },
-                    "then": {"set": {"taxable": False, "rate": 0}, "emit_obligations": []},
-                    "because": "CA B2B SaaS exempt.",
-                },
-            },
-            {
-                "rule_id": "US-CA-SALES-DEFAULT",
-                "name": "Default fallback",
-                "priority": 0,
-                "rule_json": {
-                    "rule_id": "US-CA-SALES-DEFAULT",
-                    "name": "Default fallback",
-                    "priority": 0,
-                    "when": {"eq": ["transaction.jurisdiction", "US-CA"]},
-                    "then": {"set": {"taxable": False, "rate": 0}, "emit_obligations": []},
-                    "because": "Default: not taxable.",
-                },
-            },
-        ]
-
-        for r in rules_data:
-            await session.execute(
+            result = await session.execute(
                 text("""
-                    INSERT INTO rules (rule_pk, ruleset_id, rule_id, name, priority, rule_json, state, updated_at)
-                    VALUES (:pk, :rsid, :rid, :name, :prio, CAST(:json AS jsonb), 'draft', :now)
+                    SELECT rule_json FROM rules
+                    WHERE ruleset_id = :rsid AND state = 'draft'
+                    ORDER BY priority DESC
                 """),
-                {
-                    "pk": str(uuid4()),
-                    "rsid": ruleset_id,
-                    "rid": r["rule_id"],
-                    "name": r["name"],
-                    "prio": r["priority"],
-                    "json": __import__("json").dumps(r["rule_json"]),
-                    "now": now,
-                },
+                {"rsid": ruleset_id},
             )
-        await session.commit()
+            rules = [row[0] for row in result.fetchall()]
+            if not rules:
+                print(f"No draft rules for {jur}/{tax_type}.")
+                continue
 
-        # Load draft rules and publish
-        result = await session.execute(
-            text("""
-                SELECT rule_json FROM rules
-                WHERE ruleset_id = :rsid AND state = 'draft'
-                ORDER BY priority DESC
-            """),
-            {"rsid": ruleset_id},
-        )
-        rows = result.fetchall()
-        rules = [row[0] for row in rows]
-        if not rules:
-            print("No draft rules found.")
-            return
-
-        # Check if version 1.0.0 already exists
-        result = await session.execute(
-            text("""
-                SELECT version_id FROM ruleset_versions
-                WHERE ruleset_id = :rsid AND version = '1.0.0'
-            """),
-            {"rsid": ruleset_id},
-        )
-        if result.fetchone():
-            print("Version 1.0.0 already published.")
-        else:
-            bundle = {"rules": rules}
             bh = bundle_hash(rules)
             version_id = str(uuid4())
             eff_from = datetime(2026, 2, 1, 0, 0, 0, tzinfo=UTC)
 
-            # Close previous version if any
+            # Check if we need 1.0.0 (fresh) or 1.1.0 (update)
+            result = await session.execute(
+                text("SELECT version FROM ruleset_versions WHERE ruleset_id = :rsid ORDER BY version DESC LIMIT 1"),
+                {"rsid": ruleset_id},
+            )
+            row = result.fetchone()
+            next_version = "1.1.0" if row else "1.0.0"
+
+            # Close any open version so the new one takes effect
             await session.execute(
                 text("""
                     UPDATE ruleset_versions
@@ -202,20 +158,21 @@ async def seed():
                 """),
                 {"eff": eff_from, "rsid": ruleset_id},
             )
-
             await session.execute(
                 text("""
                     INSERT INTO ruleset_versions
                     (version_id, ruleset_id, version, effective_from, effective_to, bundle_hash, bundle_json, published_at, change_summary)
-                    VALUES (:vid, :rsid, '1.0.0', :eff_from, NULL, :bh, CAST(:bundle AS jsonb), :now, 'Initial seed')
+                    VALUES (:vid, :rsid, :version, :eff_from, NULL, :bh, CAST(:bundle AS jsonb), :now, :summary)
                 """),
                 {
                     "vid": version_id,
                     "rsid": ruleset_id,
+                    "version": next_version,
                     "eff_from": eff_from,
                     "bh": bh,
-                    "bundle": __import__("json").dumps(bundle),
+                    "bundle": json.dumps({"rules": rules}),
                     "now": now,
+                    "summary": "Initial seed" if next_version == "1.0.0" else "Expanded ruleset",
                 },
             )
             await session.commit()

@@ -146,6 +146,16 @@ Expected: `taxable: true`, `rate: 0.0725`, `tax_amount: 7.25`, and a fired rule 
 - Swagger UI: http://localhost:8000/docs  
 - ReDoc: http://localhost:8000/redoc  
 
+**4. Test UI (React frontend)**
+
+A minimal React app for testing evaluations against any CRMS instance:
+
+```bash
+cd frontend && npm install && npm run dev
+```
+
+Open http://localhost:5173. Set the API URL (e.g. `https://crms-pu5p.onrender.com`), use presets or edit the transaction, and click **Evaluate**.
+
 ---
 
 ## API Overview
@@ -199,7 +209,9 @@ CRMS/
 │   ├── storage/repositories.py
 │   └── utils/canonical.py   # JSON hashing
 ├── alembic/                 # Migrations
-├── scripts/seed.py          # Demo tenant, ruleset, rules
+├── scripts/seed.py           # Demo tenant, compliance rulesets
+├── scripts/compliance_rulesets.py  # US-CA, EU, CA-ON rules
+├── frontend/                # React test UI (Vite)
 ├── tests/                   # pytest
 ├── docker-compose.yml
 ├── requirements.txt
@@ -232,9 +244,12 @@ Rules are JSON with `when` (conditions), `then` (actions), and `because` (explan
 }
 ```
 
-**Operators:** `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `exists`  
+**Operators:** `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `exists`, `not_exists`, `path_eq`, `path_neq`  
 **Combinators:** `all`, `any`  
+**Then extensions:** `rate_components`, `add_risk_flags`  
 **Semantics:** Rules sorted by priority (desc); first match wins.
+
+**Transaction schema:** See [docs/TRANSACTION_SCHEMA.md](docs/TRANSACTION_SCHEMA.md) for supported fields (buyer, product, evidence, marketplace, fulfillment, metrics, doc, event).
 
 ---
 
@@ -263,7 +278,7 @@ Unit tests cover the rule evaluator and canonical hashing. Integration tests ass
 
 To see example inputs and outputs without running the API:
 
-- **`examples/sample_requests.json`** — 100 sample evaluation requests
+- **`examples/sample_requests.json`** — 40 sample evaluation requests (all rulesets & rule paths)
 - **`examples/sample_responses.json`** — Corresponding results (taxable, rate, fired rules)
 
 To regenerate responses after changing rules:

@@ -15,6 +15,8 @@ from crms.schemas.evaluation import (
     EvaluationExplanation,
     FiredRule,
     Obligation,
+    RateComponent,
+    RiskFlag,
     RulesetInfo,
     VersionInfo,
 )
@@ -90,11 +92,15 @@ async def evaluate_transaction(
     result, fired = evaluate_rules(context, rules, trans.amount)
 
     obligations = result["obligations"]  # Already Obligation instances from evaluator
+    rate_components = [RateComponent(**rc) for rc in result.get("rate_components", [])]
+    risk_flags = [RiskFlag(**rf) for rf in result.get("risk_flags", [])]
     result_obj = EvaluationResult(
         taxable=result["taxable"],
         rate=result["rate"],
         tax_amount=result["tax_amount"],
         obligations=obligations,
+        rate_components=rate_components,
+        risk_flags=risk_flags,
     )
     explanation = EvaluationExplanation(
         fired_rules=[FiredRule(rule_id=r.rule_id, name=r.name, because=r.because) for r in fired]

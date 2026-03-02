@@ -125,3 +125,44 @@ def test_emit_obligations():
     assert len(result["obligations"]) == 1
     assert result["obligations"][0].type == "NEXUS_MONITOR"
     assert result["obligations"][0].threshold == 500000
+
+
+def test_not_exists_and_path_neq():
+    """Test not_exists and path_neq operators."""
+    rules = [
+        {
+            "rule_id": "R1",
+            "name": "Conflicting evidence",
+            "priority": 10,
+            "when": {
+                "all": [
+                    {"exists": ["transaction.evidence.billing_country"]},
+                    {"exists": ["transaction.evidence.ip_country"]},
+                    {"path_neq": ["transaction.evidence.billing_country", "transaction.evidence.ip_country"]},
+                ]
+            },
+            "then": {"set": {"taxable": True, "rate": 0.0725}, "add_risk_flags": [{"type": "CONFLICTING", "severity": "HIGH"}]},
+            "because": "Conflicting evidence",
+        },
+        {
+            "rule_id": "R2",
+            "name": "No resale cert",
+            "priority": 5,
+            "when": {"all": [{"eq": ["transaction.buyer.type", "BUSINESS"]}, {"not_exists": ["transaction.doc.resale_cert_valid"]}]},
+            "then": {"set": {"taxable": True, "rate": 0.0725, "rate_components": [{"name": "CA_BASE", "rate": 0.0725}]}},
+            "because": "No cert",
+        },
+    ]
+    context = {"transaction": {"jurisdiction": "US-CA", "amount": 100, "buyer": {"type": "BUSINESS"}, "evidence": {"billing_country": "US", "ip_country": "CA"}}}
+    result, fired = evaluate_rules(context, rules, 100)
+    assert result["taxable"] is True
+    assert result["rate"] == 0.0725
+    assert len(result["risk_flags"]) == 1
+    assert result["risk_flags"][0]["type"] == "CONFLICTING"
+    assert fired[0].rule_id == "R1"
+
+    context2 = {"transaction": {"jurisdiction": "US-CA", "amount": 100, "buyer": {"type": "BUSINESS"}}}
+    result2, fired2 = evaluate_rules(context2, rules, 100)
+    assert result2["taxable"] is True
+    assert len(result2["rate_components"]) == 1
+    assert result2["rate_components"][0]["name"] == "CA_BASE"

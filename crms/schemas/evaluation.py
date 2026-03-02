@@ -31,6 +31,7 @@ class Obligation(BaseModel):
     type: str
     threshold: int | float | None = None
     window_days: int | None = None
+    message: str | None = None
 
 
 class FiredRule(BaseModel):
@@ -41,6 +42,20 @@ class FiredRule(BaseModel):
     because: str
 
 
+class RiskFlag(BaseModel):
+    """Risk flag from rule evaluation."""
+
+    type: str
+    severity: str = ""
+
+
+class RateComponent(BaseModel):
+    """Rate component for breakdown."""
+
+    name: str
+    rate: float
+
+
 class EvaluationResult(BaseModel):
     """Result of evaluation."""
 
@@ -48,6 +63,8 @@ class EvaluationResult(BaseModel):
     rate: float
     tax_amount: float
     obligations: list[Obligation] = Field(default_factory=list)
+    rate_components: list[RateComponent] = Field(default_factory=list)
+    risk_flags: list[RiskFlag] = Field(default_factory=list)
 
 
 class EvaluationExplanation(BaseModel):
