@@ -172,6 +172,70 @@ Easiest way to get a public URL for the React app:
 To deploy from the repo instead: at [vercel.com](https://vercel.com) → **Add New Project** → Import your repo → set **Root Directory** to `frontend` → Deploy. Future pushes to the repo can auto-deploy.
 
 ---
+## File-by-File Breakdown
+
+1. **`crms/main.py` — Application entry point**  
+   Creates the FastAPI app, configures CORS (allows all origins for the frontend), and mounts three routers: health (`/health`, `/metrics`), evaluations (`/v1/evaluations`), and admin (`/v1/admin/`). This is what `uvicorn` boots.
+
+2. **`crms/config.py` — Settings from environment**  
+   Uses `pydantic-settings` to load `DATABASE_URL`, `API_KEY_HASH_SALT`, `LOG_LEVEL` from `.env`. Has a validator that converts `postgresql://` to `postgresql+asyncpg://` (Render gives the former, SQLAlchemy needs the latter).
+
+3. **`crms/database.py` — DB engine & sessions**  
+   Creates the async SQLAlchemy engine. Handles Supabase SSL: strips `sslmode=` from the URL (`asyncpg` doesn't accept it as a query param) and passes SSL via `connect_args`. Provides `get_db()` as a FastAPI dependency that yields a session and auto-commits/rollbacks.
+
+4. **`crms/auth/middleware.py` — API key authentication**  
+   Extracts `Authorization: Bearer <key>` from the request, hashes it with `SHA256(salt:key)`, and looks up the `tenants` table. If the hash matches, returns the Tenant row. Every protected endpoint uses `TenantDep` (a typed dependency) to get the authenticated tenant.
+
+5. **`crms/models/tenant.py`, `ruleset.py`, `evaluation.py` — SQLAlchemy models**  
+   Maps to 5 Postgres tables:
+   - `tenants`: `tenant_id`, `name`, `api_key_hash`
+   - `rulesets`: `ruleset_id`, `tenant_id`, `jurisdiction`, `tax_type`
+   - `rules`: `rule_pk`, `ruleset_id`, `rule_id`, `priority`, `rule_json` (JSONB), `state`
+   - `ruleset_versions`: `version_id`, `ruleset_id`, `version`, `effective_from/to`, `bundle_json` (JSONB), `bundle_hash`
+   - `evaluations`: `evaluation_id`, `tenant_id`, `version_id`, `input_json`, `output_json`, `idempotency_key` — append-only audit log
+
+6. **`crms/schemas/evaluation.py` — Pydantic request/response**  
+   Transaction uses `model_config = {"extra": "allow"}` so any nested fields (`buyer`, `product`, `evidence`, etc.) pass through. The response includes:
+   - `EvaluationResult` (`taxable`, `rate`, `tax_amount`, `obligations`, `rate_components`, `risk_flags`)
+   - `EvaluationExplanation` (which rules fired and why)
+
+7. **`crms/engine/evaluator.py` — The rule engine (pure Python, no DB)**  
+   This is the core. It takes a context dict, a list of rule dicts, and an amount. It:
+   - Sorts rules by `priority` DESC
+   - For each rule, evaluates the `when` condition tree
+   - First match wins: applies `then.set` (`taxable`, `rate`, `rate_components`), collects obligations and risk flags
+   - Returns `(result_dict, fired_rules)`
+
+   Supported operators: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `exists`, `not_exists`, `path_eq`, `path_neq`, plus combinators `all`/`any`. Path resolution uses dot notation (`transaction.buyer.type`).
+
+8. **`crms/storage/repositories.py` — DB queries**  
+   Four repository functions:
+   - `get_ruleset_by_jurisdiction_tax()` — find the ruleset
+   - `get_version_for_effective_at()` — resolve the version active at a timestamp
+   - `get_evaluation_by_idempotency()` — check for cached result
+   - `create_evaluation()` — insert audit record
+
+9. **`crms/api/evaluations.py` — The main endpoint**  
+   Orchestrates the full evaluation flow (see walkthrough below).
+
+10. **`crms/api/admin.py` — CRUD for rulesets/rules/publish**  
+   Lets you create rulesets, add/update rules, and publish versions via the API.
+
+11. **`crms/utils/canonical.py` — Deterministic hashing**  
+   Produces canonical JSON (sorted keys, no whitespace) and SHA256 hashes for both request deduplication and bundle versioning.
+
+12. **`scripts/compliance_rulesets.py` — Rule definitions**  
+   All the compliance rules as Python dicts (US-CA, EU, CA-ON). Imported by the seed script.
+
+13. **`scripts/seed.py` — Database seeder**  
+   Creates the demo tenant, API key, all rulesets, inserts rules, and publishes versions. Runs on deploy.
+
+14. **`frontend/src/App.jsx` — React test UI**  
+   Single-page app with presets, transaction form, and response display. Calls the API directly via `fetch()`.
+
+15. **`alembic/` — Migrations**  
+   `001_initial_schema.py` creates all 5 tables. `env.py` handles async migrations with Supabase SSL.
+---
 
 ## API Overview
 
