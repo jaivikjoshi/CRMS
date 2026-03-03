@@ -544,6 +544,10 @@ details summary:hover {
   color: #a5b4fc;
 }
 
+.trace-missing-block {
+  /* wrapper for trace-missing content so JSX parses reliably in all bundlers */
+}
+
 .trace-missing {
   color: #f97316;
   font-size: 0.85rem;

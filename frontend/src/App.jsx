@@ -554,7 +554,7 @@ function App() {
                           <h4 className="counterfactuals-title">Counterfactuals (to change outcome)</h4>
                           <details className="counterfactuals-explainer">
                             <summary>What are counterfactuals?</summary>
-                            <p>Suggestions for what to change so this transaction would get a different result (e.g. exempt instead of taxable). Each block is built from a &quot;near-miss&quot; rule that almost matched. Apply the listed changes to see the preview outcome.</p>
+                            <p>Suggestions for what to change so this transaction would get a different result — e.g. exempt instead of taxable. Each block is built from a near-miss rule that almost matched. Apply the listed changes to see the preview outcome.</p>
                           </details>
                           <div className="counterfactual-current">
                             Currently: {response.result.taxable ? 'taxable' : 'exempt'} at {((response.result.rate || 0) * 100).toFixed(2)}%
@@ -596,7 +596,7 @@ function App() {
                       )}
                     </>
                   ) : (
-                    <>
+                    <div className="trace-missing-block">
                       <p className="trace-missing">
                         Full trace was requested but this API did not return a trace. To use full trace:
                       </p>
@@ -605,7 +605,7 @@ function App() {
                         <li>Set <strong>Base URL</strong> above to <code>http://localhost:8000</code> and Evaluate again.</li>
                       </ol>
                       <p className="trace-missing">Or redeploy your CRMS backend so the live API includes the trace feature.</p>
-                    </>
+                    </div>
                   )}
                 </div>
               )}
