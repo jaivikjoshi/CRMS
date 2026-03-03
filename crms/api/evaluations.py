@@ -13,6 +13,7 @@ from crms.schemas.evaluation import (
     EvaluationResponse,
     EvaluationResult,
     EvaluationExplanation,
+    EvaluationTrace,
     FiredRule,
     Obligation,
     RateComponent,
@@ -41,6 +42,14 @@ async def evaluate_transaction(
     """
     Evaluate a transaction against the ruleset.
     Returns taxability, rate, obligations, and explanation.
+
+    **Explanation levels** (via body.options):
+    - options.explain = "none" (default): no trace.
+    - options.explain = "winner": only fired rule (same as today).
+    - options.explain = "full": auditable trace with steps, condition evals, evidence_paths_used,
+      missing_evidence, confidence, near-miss rules, and counterfactual guidance
+      ("what to change to get a different outcome" with optional outcome_preview).
+
     Idempotent when idempotency_key is provided.
     """
     trans = body.transaction
@@ -60,6 +69,13 @@ async def evaluate_transaction(
         )
         if existing:
             out = existing.output_json
+            expl = out.get("explanation") or {}
+            fired_rules = [FiredRule(**r) for r in expl.get("fired_rules", [])]
+            trace_data = expl.get("trace")
+            explanation = EvaluationExplanation(
+                fired_rules=fired_rules,
+                trace=EvaluationTrace.model_validate(trace_data) if isinstance(trace_data, dict) else None,
+            )
             return EvaluationResponse(
                 evaluation_id=str(existing.evaluation_id),
                 ruleset=RulesetInfo(
@@ -71,9 +87,7 @@ async def evaluate_transaction(
                     bundle_hash=out["version"]["bundle_hash"],
                 ),
                 result=EvaluationResult(**out["result"]),
-                explanation=EvaluationExplanation(
-                    fired_rules=[FiredRule(**r) for r in out["explanation"]["fired_rules"]]
-                ),
+                explanation=explanation,
             )
 
     version = await get_version_for_effective_at(
@@ -85,15 +99,28 @@ async def evaluate_transaction(
             detail="No published version effective at the given effective_at",
         )
 
-    # Evaluate - wrap transaction so rule paths like "transaction.jurisdiction" work
     trans_dict = trans.model_dump()
     context = {"transaction": trans_dict}
     rules = version.bundle_json.get("rules", [])
-    result, fired = evaluate_rules(context, rules, trans.amount)
+    options = body.options
+    explain = (options.explain if options else "none") or "none"
+    trace_requested = explain == "full"
+    top_k = (options.near_miss if options else 3) if trace_requested else 0
+    max_cf = (options.counterfactuals if options else 2) if trace_requested else 0
 
-    obligations = result["obligations"]  # Already Obligation instances from evaluator
+    result, fired, trace_out = evaluate_rules(
+        context,
+        rules,
+        trans.amount,
+        trace=trace_requested,
+        top_k_near_miss=top_k,
+        max_counterfactuals=max_cf,
+    )
+
+    obligations = result["obligations"]
     rate_components = [RateComponent(**rc) for rc in result.get("rate_components", [])]
     risk_flags = [RiskFlag(**rf) for rf in result.get("risk_flags", [])]
+    matched_rule_id = fired[0].rule_id if fired else None
     result_obj = EvaluationResult(
         taxable=result["taxable"],
         rate=result["rate"],
@@ -101,9 +128,11 @@ async def evaluate_transaction(
         obligations=obligations,
         rate_components=rate_components,
         risk_flags=risk_flags,
+        matched_rule_id=matched_rule_id,
     )
     explanation = EvaluationExplanation(
-        fired_rules=[FiredRule(rule_id=r.rule_id, name=r.name, because=r.because) for r in fired]
+        fired_rules=[FiredRule(rule_id=r.rule_id, name=r.name, because=r.because) for r in fired],
+        trace=trace_out,
     )
 
     req_hash = request_hash(body.model_dump())
@@ -123,12 +152,14 @@ async def evaluate_transaction(
         idempotency_key=body.idempotency_key,
         request_hash=req_hash,
     )
+    explanation_dump = explanation.model_dump()
+    # Pydantic serializes trace (EvaluationTrace) in explanation; include in output for audit
     output_json = {
         "evaluation_id": str(ev.evaluation_id),
         "ruleset": {"jurisdiction": trans.jurisdiction, "tax_type": trans.tax_type},
         "version": {"version": version.version, "bundle_hash": version.bundle_hash},
         "result": result_obj.model_dump(),
-        "explanation": explanation.model_dump(),
+        "explanation": explanation_dump,
     }
     ev.output_json = output_json
 
