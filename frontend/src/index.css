@@ -605,20 +605,141 @@ details summary:hover {
 .trace-pass { color: #22c55e; }
 .trace-fail { color: #f87171; }
 
+/* Counterfactuals — highlighted block */
 .counterfactuals {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  border: 1px solid #6366f1;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.counterfactuals-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c7d2fe;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.counterfactuals-explainer {
+  margin-bottom: 0.75rem;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.counterfactuals-explainer summary {
+  cursor: pointer;
+  color: #a5b4fc;
+  font-weight: 500;
+}
+
+.counterfactuals-explainer p {
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+
+.counterfactual-current {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.counterfactual-current::before {
+  content: 'Baseline: ';
+  color: #64748b;
+}
+
+.counterfactual-card {
   margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 15, 18, 0.6);
+  border-radius: 6px;
+  border-left: 3px solid #818cf8;
+}
+
+.counterfactual-card:first-of-type {
+  margin-top: 0;
+}
+
+.counterfactual-goal {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.counterfactual-goal-label {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.counterfactual-goal-value {
+  color: #e0e7ff;
+  font-weight: 500;
+}
+
+.counterfactual-rule {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.counterfactual-count {
+  color: #6366f1;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.counterfactual-changes {
+  margin: 0.35rem 0 0 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.counterfactual-change {
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.cf-path {
+  color: #c4b5fd;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+}
+
+.cf-arrow {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.cf-value {
+  color: #86efac;
+  font-weight: 500;
+}
+
+.cf-reason {
+  color: #94a3b8;
   font-size: 0.78rem;
 }
 
-.counterfactual {
+.counterfactual-preview {
   margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: #1a1a2e;
-  border-radius: 6px;
-  border-left: 2px solid #6366f1;
+  padding: 0.35rem 0.5rem;
+  background: rgba(99, 102, 241, 0.15);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #c7d2fe;
+  font-weight: 500;
 }
 
-.counterfactual ul {
-  margin: 0.25rem 0 0 1rem;
-  padding: 0;
+.cf-preview-label {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.cf-preview-diff {
+  color: #86efac;
+  font-size: 0.78rem;
+  margin-left: 0.25rem;
 }

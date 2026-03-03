@@ -462,10 +462,15 @@ def evaluate_rules(
         near_miss_steps = [s for _, s in near_miss]
         counterfactuals_list: list[Counterfactual] = []
         if max_counterfactuals > 0 and near_miss_steps and winner_rule:
+            current_taxable = result.get("taxable", False)
+            current_rate = result.get("rate", 0.0)
             for step in near_miss_steps[:max_counterfactuals]:
                 changes: list[CounterfactualChange] = []
                 for e in step.evaluated:
                     if e.node_type != "leaf" or e.passed:
+                        continue
+                    # Skip no-op: suggesting same value as current (e.g. "Set X to US-CA (was US-CA)")
+                    if e.actual != "__MISSING__" and e.expected is not None and e.actual == e.expected:
                         continue
                     if e.actual == "__MISSING__":
                         changes.append(
@@ -510,7 +515,18 @@ def evaluate_rules(
                     }
                 except Exception:
                     outcome_preview = None
-                goal = "non_taxable" if result.get("taxable") else "lower_rate"
+                # Derive goal from preview when available; otherwise fallback
+                if outcome_preview is not None:
+                    if not outcome_preview["taxable"] and current_taxable:
+                        goal = "non_taxable"
+                    elif outcome_preview["rate"] < current_rate and outcome_preview["rate"] >= 0:
+                        goal = "lower_rate"
+                    elif outcome_preview["taxable"] and not current_taxable:
+                        goal = "taxable"
+                    else:
+                        goal = "different_outcome"
+                else:
+                    goal = "non_taxable" if current_taxable else "lower_rate"
                 counterfactuals_list.append(
                     Counterfactual(
                         goal=goal,
@@ -519,6 +535,8 @@ def evaluate_rules(
                         outcome_preview=outcome_preview,
                     )
                 )
+            # Sort by fewest changes first (most actionable first)
+            counterfactuals_list.sort(key=lambda cf: len(cf.changes))
 
         trace_out = EvaluationTrace(
             winner=(

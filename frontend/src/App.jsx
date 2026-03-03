@@ -551,17 +551,44 @@ function App() {
                       )}
                       {response.explanation.trace.counterfactuals?.length > 0 && (
                         <div className="counterfactuals">
-                          <strong>Counterfactuals (to change outcome):</strong>
+                          <h4 className="counterfactuals-title">Counterfactuals (to change outcome)</h4>
+                          <details className="counterfactuals-explainer">
+                            <summary>What are counterfactuals?</summary>
+                            <p>Suggestions for what to change so this transaction would get a different result (e.g. exempt instead of taxable). Each block is built from a &quot;near-miss&quot; rule that almost matched. Apply the listed changes to see the preview outcome.</p>
+                          </details>
+                          <div className="counterfactual-current">
+                            Currently: {response.result.taxable ? 'taxable' : 'exempt'} at {((response.result.rate || 0) * 100).toFixed(2)}%
+                          </div>
                           {response.explanation.trace.counterfactuals.map((cf, i) => (
-                            <div key={i} className="counterfactual">
-                              <span className="ob-type">Goal: {cf.goal}</span> (from rule {cf.based_on_rule_id})
-                              <ul>
+                            <div key={i} className="counterfactual-card">
+                              <div className="counterfactual-goal">
+                                <span className="counterfactual-goal-label">Goal:</span> <span className="counterfactual-goal-value">{cf.goal.replace(/_/g, ' ')}</span>
+                                <span className="counterfactual-rule"> (from rule {cf.based_on_rule_id})</span>
+                                {cf.changes?.length > 0 && (
+                                  <span className="counterfactual-count"> · {cf.changes.length} change{cf.changes.length !== 1 ? 's' : ''}</span>
+                                )}
+                              </div>
+                              <ul className="counterfactual-changes">
                                 {cf.changes?.map((ch, j) => (
-                                  <li key={j}>{ch.path} → {ch.suggested_value != null ? String(ch.suggested_value) : 'provide'} — {ch.reason}</li>
+                                  <li key={j} className="counterfactual-change">
+                                    <span className="cf-path">{ch.path}</span>
+                                    <span className="cf-arrow"> → </span>
+                                    <span className="cf-value">{ch.suggested_value != null ? String(ch.suggested_value) : 'provide'}</span>
+                                    <span className="cf-reason"> — {ch.reason}</span>
+                                  </li>
                                 ))}
                               </ul>
                               {cf.outcome_preview && (
-                                <p className="field-hint">Preview: taxable={String(cf.outcome_preview.taxable)}, rate={((cf.outcome_preview.rate || 0) * 100).toFixed(2)}%</p>
+                                <div className="counterfactual-preview">
+                                  <span className="cf-preview-label">With these changes:</span>{' '}
+                                  {cf.outcome_preview.taxable ? 'taxable' : 'exempt'} at {((cf.outcome_preview.rate || 0) * 100).toFixed(2)}%
+                                  {response.result.taxable !== cf.outcome_preview.taxable && (
+                                    <span className="cf-preview-diff">
+                                      {' '}Outcome would flip: {response.result.taxable ? 'Taxable' : 'Exempt'}
+                                      {' '}&rarr; {cf.outcome_preview.taxable ? 'Taxable' : 'Exempt'} ({((cf.outcome_preview.rate || 0) * 100).toFixed(2)}%)
+                                    </span>
+                                  )}
+                                </div>
                               )}
                             </div>
                           ))}
@@ -569,14 +596,16 @@ function App() {
                       )}
                     </>
                   ) : (
-                    <p className="trace-missing">
-                      Full trace was requested but this API did not return a trace. To use full trace:
-                    </p>
-                    <ol className="trace-missing-steps">
-                      <li>Run the CRMS backend locally: <code>uvicorn crms.main:app --reload --port 8000</code> (after migrations and <code>python scripts/seed.py</code>).</li>
-                      <li>Set <strong>Base URL</strong> above to <code>http://localhost:8000</code> and Evaluate again.</li>
-                    </ol>
-                    <p className="trace-missing">Or redeploy your CRMS backend so the live API includes the trace feature.</p>
+                    <>
+                      <p className="trace-missing">
+                        Full trace was requested but this API did not return a trace. To use full trace:
+                      </p>
+                      <ol className="trace-missing-steps">
+                        <li>Run the CRMS backend locally: <code>uvicorn crms.main:app --reload --port 8000</code> (after migrations and <code>python scripts/seed.py</code>).</li>
+                        <li>Set <strong>Base URL</strong> above to <code>http://localhost:8000</code> and Evaluate again.</li>
+                      </ol>
+                      <p className="trace-missing">Or redeploy your CRMS backend so the live API includes the trace feature.</p>
+                    </>
                   )}
                 </div>
               )}

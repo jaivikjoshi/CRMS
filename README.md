@@ -156,6 +156,21 @@ cd frontend && npm install && npm run dev
 
 Open http://localhost:5173. Set the API URL (e.g. `https://crms-pu5p.onrender.com`), use presets or edit the transaction, and click **Evaluate**.
 
+**5. Host the frontend (Vercel — free)**
+
+Easiest way to get a public URL for the React app:
+
+1. Install Vercel CLI once: `npm i -g vercel` (or use Node 20+ and `npx vercel`).
+2. From the **frontend** folder, deploy:
+   ```bash
+   cd frontend
+   npx vercel
+   ```
+3. Follow the prompts (log in with GitHub/email if needed, accept defaults). You’ll get a URL like `https://crms-frontend-xxx.vercel.app`.
+4. In the deployed app, set **Base URL** to your CRMS API (e.g. `https://crms-pu5p.onrender.com`).
+
+To deploy from the repo instead: at [vercel.com](https://vercel.com) → **Add New Project** → Import your repo → set **Root Directory** to `frontend` → Deploy. Future pushes to the repo can auto-deploy.
+
 ---
 
 ## API Overview
